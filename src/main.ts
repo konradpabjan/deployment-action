@@ -17,6 +17,7 @@ async function run() {
 
     const token = core.getInput("token", { required: true });
     const url = core.getInput("target_url", { required: false }) || defaultUrl;
+    const inputRef = core.getInput("ref");
     const environment =
       core.getInput("environment", { required: false }) || "production";
     const description = core.getInput("description", { required: false });
@@ -30,7 +31,7 @@ async function run() {
     const deployment = await client.repos.createDeployment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      ref: context.ref,
+      ref: inputRef,
       required_contexts: [],
       environment,
       transient_environment: true,
