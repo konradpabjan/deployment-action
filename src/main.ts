@@ -27,11 +27,17 @@ async function run() {
       }) as DeploymentState) || "pending";
 
     const client = new github.GitHub(token);
+    
+    const fullPullRequest = await client.pulls.get({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pull_number: context.payload.issue.number
+    });
 
     const deployment = await client.repos.createDeployment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      ref: inputRef,
+      ref: fullPullRequest.data.head.ref,
       required_contexts: [],
       environment,
       transient_environment: true,
