@@ -28,7 +28,7 @@ async function run() {
 
     const client = new github.GitHub(token);
 
-    console.log(context.payload.pull_request.head);
+    console.log(context.payload.pull_request.head.ref);
 
     const deployment = await client.repos.createDeployment({
       owner: context.repo.owner,
@@ -39,6 +39,8 @@ async function run() {
       transient_environment: true,
       description
     });
+
+    console.log(deployment);
 
     await client.repos.createDeploymentStatus({
       ...context.repo,
