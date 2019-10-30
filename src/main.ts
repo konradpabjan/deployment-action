@@ -28,19 +28,12 @@ async function run() {
 
     const client = new github.GitHub(token);
 
-    console.log(context.payload.pull_request);
-    console.log(context.payload.issue);
-    
-    const fullPullRequest = await client.pulls.get({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      pull_number: context.payload.pull_request.pull_number
-    });
+    console.log(context.payload.pull_request.head);
 
     const deployment = await client.repos.createDeployment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      ref: fullPullRequest.data.head.ref,
+      ref: context.payload.pull_request.head.ref,
       required_contexts: [],
       environment,
       transient_environment: true,
